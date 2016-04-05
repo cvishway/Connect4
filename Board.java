@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import java.util.*;
 import java.text.*; 
@@ -11,7 +12,7 @@ import java.text.*;
 
 
 
-public class Board 
+public class Board extends BoardController
 {
 
 
@@ -22,10 +23,6 @@ public class Board
 	private static GameAI AI = new GameAI();
 
 
-	public static String [] yesOrNoPlayAgain = {"Yes, Im excited to play again!", "No,I do not want to play."};
-	public static String userChoiceOfEndGame;
-	public static boolean userWishesToPlayAgain;
-
 	public static void main(String[] args)
 	{
 
@@ -33,7 +30,10 @@ public class Board
 		 Learnt to use JOptionPane from
 		 docs.oracle.com/javase/7/docs/api/javax/swing/JOptionPane.html
 		 */
-		userChoiceTypeOfPlay = (String)JOptionPane.showInputDialog(null,"Which game mode would you like to play?","Select Game Mode",JOptionPane.PLAIN_MESSAGE,null, whichModeToPlay,"--------");
+		userChoiceTypeOfPlay = (String)JOptionPane.showInputDialog(null,"                     Welcome To Connect 4!"+"\n"+
+		 "Fill in four cells in all directions continously to win!"+"\n"+"Tip:Look at Status bar for instructions."+"\n"+
+				"Caution: Computer is Team Red."+"\n"+"Which game mode would you like to play?","Select Game Mode",JOptionPane.PLAIN_MESSAGE,null, whichModeToPlay,"--------");
+	
 
 		// checks if user chose to play with computer or user wants to play 2 player game
 		if(userChoiceTypeOfPlay == whichModeToPlay[1])
@@ -68,6 +68,8 @@ public class Board
 		private int Click5=0;
 		private int Click6=0;
 		private int Click7=0;
+		
+		private int allButtonDisabled = 0;
 
 		//this object relays messages from the GUI to the BoardController class
 
@@ -124,8 +126,12 @@ public class Board
 					cells[i][j]= new JLabel("");
 					cells[i][j].setBackground(Color.yellow);
 					cells[i][j].setBorder(BorderFactory.createEtchedBorder());
+					
 					cells[i][j].setOpaque(true);
 					boardPanel.add(cells[i][j]);
+					
+					
+					cells[i][j].setBorder(new LineBorder(Color.BLACK));
 
 				}
 			}
@@ -185,34 +191,7 @@ public class Board
 
 					if(controller.getColour(i,q)=="red"){
 						cells[i][q].setBackground(Color.red);
-						if(q==1)
-						{
-							Click1++;
-						}
-						else if(q==2)
-						{
-							Click2++;
-						}
-						else if(q==3)
-						{
-							Click3++;
-						}
-						else if(q==4)
-						{
-							Click4++;
-						}
-						else if(q==5)
-						{
-							Click5++;
-						}
-						else if(q==6)
-						{
-							Click6++;
-						}
-						else if(q==7)
-						{
-							Click7++;
-						}
+						
 
 					}
 
@@ -220,34 +199,7 @@ public class Board
 
 					else if(controller.getColour(i,q)=="blue"){
 						cells[i][q].setBackground(Color.blue);
-						if(q==1)
-						{
-							Click1++;
-						}
-						else if(q==2)
-						{
-							Click2++;
-						}
-						else if(q==3)
-						{
-							Click3++;
-						}
-						else if(q==4)
-						{
-							Click4++;
-						}
-						else if(q==5)
-						{
-							Click5++;
-						}
-						else if(q==6)
-						{
-							Click6++;
-						}
-						else if(q==7)
-						{
-							Click7++;
-						}
+						
 					}
 				}
 			}
@@ -280,7 +232,7 @@ public class Board
 
 			JButton button2 = new JButton("No");
 			panel.add(button2);
-			button.addActionListener (new QuitListener());
+			button2.addActionListener (new QuitListener());
 
 
 
@@ -302,62 +254,88 @@ public class Board
 		 */
 
 		public void actionPerformed(ActionEvent e) {
+			
 
 			if(e.getSource()== Column1){
 				controller.add(6);
 				this.updateBoard();
+				Click1++;
+				System.out.println(Click1);
 				if(Click1==6)
 				{
+					
 					Column1.setEnabled(false);
+					allButtonDisabled++;
 				}
 			}
 			else if(e.getSource()== Column2){
 				controller.add(5);
 				this.updateBoard();
+				Click2++;
 				if(Click2==6)
 				{
 					Column2.setEnabled(false);
+					allButtonDisabled++;
 				}
 			}
 			else if(e.getSource()== Column3){
 				controller.add(4);
 				this.updateBoard();	
+				Click3++;
 				if(Click3==6)
 				{
 					Column3.setEnabled(false);
+					allButtonDisabled++;
 				}
 			}
 			else if(e.getSource()== Column4){
 				controller.add(3);
 				this.updateBoard();
+				Click4++;
 				if(Click4==6)
 				{
 					Column4.setEnabled(false);
+					allButtonDisabled++;
 				}
 			}
 			else if(e.getSource()== Column5){
 				controller.add(2);
 				this.updateBoard();
+				Click5++;
 				if(Click5==6)
 				{
 					Column5.setEnabled(false);
+					allButtonDisabled++;
 				}
 			}
 			else if(e.getSource()== Column6){
 				controller.add(1);
 				this.updateBoard();	
+				Click6++;
 				if(Click6==6)
 				{
 					Column6.setEnabled(false);
+					allButtonDisabled++;
 				}
 			}
 			else {
 				controller.add(0); 
 				this.updateBoard();
+				Click7++;
 				if(Click7==6)
 				{
 					Column7.setEnabled(false);
+					allButtonDisabled++;
 				}
+				
+			if (allButtonDisabled==7)
+			{
+				System.out.println("Tie Game");
+			}
+			
+				
+				
+			
 			}
 
 			if(vsComputer == true){
@@ -421,13 +399,8 @@ public class Board
 				status.setText("Turn:"+controller.getTurn());
 			}
 		}
-
-
-
-
 	}
-
-
-
 }
 
+
+        

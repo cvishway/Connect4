@@ -1,19 +1,13 @@
 
 public class BoardController {
-	
-	
-	
-	
 	private String turn = this.whichPlayerToStart();//commnicates whose turn it is
 	private BoardData board = new BoardData(); 
 
 	
-	//method determines which player will commence the game
-	//uses math.random to determine who goes first
+	//this determines who goes first randomly, by using build in Math random function
 	private String whichPlayerToStart(){
 		double whichPlayerToCommence = Math.random();
-		double randomLimit = Math.random();
-		if(whichPlayerToCommence <= randomLimit){ 
+		if(whichPlayerToCommence <10){ 
 		this.turn  = "blue";
 		return this.turn;
 		}
@@ -23,6 +17,13 @@ public class BoardController {
 		} 
 	}
 	
+	public void reset()
+	{
+		board.Reset();
+		this.whichPlayerToStart(); 
+	}
+	
+	
 	public String getTurn()
 	{
 		return this.turn; 
@@ -30,8 +31,7 @@ public class BoardController {
 	
 	// Method used to switch turns between players
 	public void changeTurn(){
-		if (this.turn =="blue")
-		{
+		if (this.turn =="blue"){
 			this.turn = "red";
 			
 		}else{
@@ -49,7 +49,7 @@ public class BoardController {
 	
 	
 	//tells the model to reset its data
-	 public void add(int column){
+	public void add(int column){
 		if(turn == "blue"){
 			board.AddBlue(column);
 			
@@ -59,14 +59,6 @@ public class BoardController {
 		this.changeTurn();
 	}
 	
-	
-	 public void reset()
-		{
-	       	board.Reset();
-			this.whichPlayerToStart(); 
-		}
-	 
-	 
 	//Determines the winner and returns it
 	public String winner(){
 		String winner ="";
